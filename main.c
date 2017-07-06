@@ -6,7 +6,10 @@
  */ 
 
 #include <avr/io.h>
+#if INDICATOR
 #include "tm1638.h"
+#endif
+
 //#include "74hc595.h"
 #include "matrix.h"
 
@@ -32,6 +35,7 @@
 unsigned char L;
 unsigned char G;
 
+#if INDICATOR
 void btn_check()
 {
 	if (button_press(1))
@@ -67,9 +71,9 @@ void btn_check()
 	{
 		clearDisplayDigit(1,false);
 	}
-	
-	
 }
+#endif
+
 
 int main(void)
 {
@@ -104,7 +108,7 @@ int main(void)
 		setLEDs(i);
 		setDisplayDigit(f&0x0f,7,false);
 #endif		
-		mx_draw(i);
+		mx_draw(0);
 //		shift_out(i);
 		
 		

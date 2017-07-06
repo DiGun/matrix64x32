@@ -26,8 +26,8 @@
 
 #define OE PC5
 
-uint8_t red[32][8];
-uint8_t grn[32][8];
+uint8_t mxR[32][8];
+uint8_t mxG[32][8];
 
 void mx_init(void);
 void mx_enable();

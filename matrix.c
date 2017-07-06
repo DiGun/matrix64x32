@@ -33,7 +33,11 @@ void mx_row(uint8_t r)
     PORTD|=(r&0b00111100);
 }
 
-void mx_draw(uint8_t c)
+void mx_draw_row(uint8_t r)
+{
+}
+
+void mx_draw_byte(uint8_t c)
 {
     static uint8_t l=0;
 	
