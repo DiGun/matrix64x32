@@ -74,12 +74,54 @@ void btn_check()
 }
 #endif
 
+void init_screen(void)
+{
+	static uint8_t a=0;
+	uint8_t x;
+	uint8_t y;
+	for (y=0;y<32;y++)
+	{
+		for (x=0;x<8;x++)
+		{
+			switch ((x+((y+a)>>3))%4)
+			{
+			case 0:
+				mxR[y][x]=0;
+			break;
+			case 1:
+				mxR[y][x]=0x0F;
+			break;
+			case 2:
+				mxR[y][x]=0xFF;
+			break;
+			case 3:
+				mxR[y][x]=0xF0;
+			break;
+			}
+
+			switch ((x*2+((y+a)>>2))%3)
+			{
+				case 0:
+				mxG[y][x]=0;
+				break;
+				case 1:
+				mxG[y][x]=0x0F;
+				break;
+				case 2:
+				mxG[y][x]=0xF0;
+				break;
+			}
+		}
+	}
+	a++;
+}
 
 int main(void)
 {
+	uint8_t shift=0;
     /* Replace with your application code */
-	unsigned char f=0;
-	unsigned char i=0;
+//	unsigned char f=0;
+//	unsigned char i=0;
 	L=0;
 	G=0;
 //	shift_init();
@@ -94,21 +136,24 @@ int main(void)
 	DDRD|=1;
 //	DDRD|=(1<<LA) |(1<<LB) |(1<<LC) |(1<<LD)|(1<<G1)|(1<<G2);
 //	DDRC|=(1<<R1) |(1<<R2);
+//	init_screen();
 	mx_disable();
     while (1) 
     {
-	
+		if((shift++)==0)
+			init_screen();
+		
 		PORTD^=1;
 #if INDICATOR
 		btn_check();
 #endif
 //		_delay_ms(10);
-		i=0xff>>((f++)%8);
+//		i=0xff>>((f++)%8);
 #if INDICATOR		
 		setLEDs(i);
 		setDisplayDigit(f&0x0f,7,false);
 #endif		
-		mx_draw(0);
+		mx_draw_row();
 //		shift_out(i);
 		
 		

@@ -26,49 +26,56 @@ inline void mx_disable()
 	PORTC |= (1<<OE);
 }
 
-void mx_row(uint8_t r)
+inline void mx_row(uint8_t r)
 {
-	PORTD&=0b11000011;
-	r=r<<2;
-    PORTD|=(r&0b00111100);
+	uint8_t t=PORTD&0b11000011;
+	r=(r&0x0F)<<2;
+//0b00111100	
+    PORTD=(t|r);
 }
 
-void mx_draw_row(uint8_t r)
+void mx_draw_row()
 {
-}
-
-void mx_draw_byte(uint8_t c)
-{
-    static uint8_t l=0;
-	
 	uint8_t i;
-//	if(c==0)
-//	{
-//		c=0xFF;
-//	}
-//	c=c<<1;
-    for (i=8; i; --i,c<<=1)
+    static uint8_t l=0;	
+	l++;
+	l&=0x0F;
+	for(i=0;i<8;i++)
+	{
+		mx_draw_byte(mxR[l][i],mxG[l][i],mxR[l+16][i],mxG[l+16][i]);
+	}
+	mx_disable();
+	mx_row(l);
+	PORTD |= (1<<LT);
+	PORTD &= ~(1<<LT);
+	mx_enable();
+}
+
+inline void mx_draw_byte(uint8_t r1,uint8_t g1,uint8_t r2,uint8_t g2)
+{
+//    static uint8_t l=0;
+	uint8_t i;
+    for (i=8; i; --i,r1<<=1,g1<<=1,r2<<=1,g2<<=1)
 	  {
-//	    PORTC &= ~((1<<R1)|(1<<R2));
-	    if (c & 0x80)
-	    /* shift a one */
-//		    PORTC |= (1<<R1)|(1<<R2)|(1<<G1)|(1<<G2);
-		    PORTC |= (1<<R2)|(1<<G1);
+	    if (r1 & 0x80)
+		    PORTC &= ~((1<<R1));
 	    else
-	    /* shift a zero */
-//		    PORTC &= ~((1<<R1)|(1<<R2)|(1<<G1)|(1<<G2));
-		    PORTC &= ~((1<<R2)|(1<<G1));
+		    PORTC |= (1<<R1);
+	    if (g1 & 0x80)
+		    PORTC &= ~((1<<G1));
+	    else
+			PORTC |= (1<<G1);
+	    if (r2 & 0x80)
+			PORTC &= ~((1<<R2));
+	    else
+			PORTC |= (1<<R2);
+	    if (g2 & 0x80)
+			PORTC &= ~((1<<G2));
+	    else
+			PORTC |= (1<<G2);
 
 	    /* clock pulse */
 	    PORTD &= ~(1<<SK);
 	    PORTD |= (1<<SK);
-		
 	  }
-	mx_disable();
-    mx_row(l++);
-	PORTD |= (1<<LT);
-//		asm("NOP");
-//		asm("NOP");
-	PORTD &= ~(1<<LT);
-	mx_enable();
 }

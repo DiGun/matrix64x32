@@ -32,6 +32,8 @@ uint8_t mxG[32][8];
 void mx_init(void);
 void mx_enable();
 void mx_disable();
-void mx_draw(uint8_t c);
+//void mx_draw(uint8_t c);
+void mx_draw_byte(uint8_t r1,uint8_t g1,uint8_t r2,uint8_t g2);
+void mx_draw_row();
 
 #endif /* MATRIX_H_ */
