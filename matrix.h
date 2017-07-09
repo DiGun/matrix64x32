@@ -9,6 +9,7 @@
 #ifndef MATRIX_H_
 #define MATRIX_H_
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #define LA PD2
 #define LB PD3
@@ -28,6 +29,8 @@
 
 uint8_t mxR[32][8];
 uint8_t mxG[32][8];
+
+volatile uint8_t mx_frame_cnt;
 
 void mx_init(void);
 void mx_enable();

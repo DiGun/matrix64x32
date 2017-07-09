@@ -6,7 +6,7 @@
  */ 
 #include "matrix.h"
 
-
+//uint8_t mx_frame=0;
 void mx_init(void)
 {	
 	DDRD|=(1<<LA) |(1<<LB) |(1<<LC) |(1<<LD)|(1<<LT)|(1<<SK);
@@ -14,6 +14,31 @@ void mx_init(void)
 	PORTD|=(1<<LA) |(1<<LB) |(1<<LC) |(1<<LD);
 	PORTC|=(1<<OE);
 	
+	// set up timer with prescaler = 256
+//	TCCR0 |= (1 << CS01)|(1 << CS00);
+	TCCR0 |= (1 << CS01);
+
+//	TCCR0 |= (1 << CS02);
+	// enable overflow interrupt
+	TIMSK |= (1 << TOIE0);	
+	
+	
+}
+
+ISR(TIMER0_OVF_vect)
+{
+	static uint8_t count=0;
+	cli();
+	count++;
+	if (count==5)
+	{
+		mx_draw_row();
+		count=0;
+	}
+		
+//	TCNT0=178;
+//	TCNT0=200;
+	sei();
 }
 
 inline void mx_enable()
@@ -34,21 +59,25 @@ inline void mx_row(uint8_t r)
     PORTD=(t|r);
 }
 
-void mx_draw_row()
+inline void mx_draw_row()
 {
 	uint8_t i;
-    static uint8_t l=0;	
-	l++;
-	l&=0x0F;
+    static uint8_t row=0;	
 	for(i=0;i<8;i++)
 	{
-		mx_draw_byte(mxR[l][i],mxG[l][i],mxR[l+16][i],mxG[l+16][i]);
+		mx_draw_byte(mxR[row][i],mxG[row][i],mxR[row+16][i],mxG[row+16][i]);
 	}
 	mx_disable();
-	mx_row(l);
+	mx_row(row);
+	row++;
 	PORTD |= (1<<LT);
 	PORTD &= ~(1<<LT);
 	mx_enable();
+	row&=0x0F;
+	if(row==0)
+	{
+		mx_frame_cnt++;
+	}
 }
 
 inline void mx_draw_byte(uint8_t r1,uint8_t g1,uint8_t r2,uint8_t g2)
