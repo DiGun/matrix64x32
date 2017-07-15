@@ -11,6 +11,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include <avr/pgmspace.h>
+//
+
+
 #define LA PD2
 #define LB PD3
 #define LC PD4
@@ -27,10 +31,24 @@
 
 #define OE PC5
 
+
+#define MX_COLOR_RED 1
+#define MX_COLOR_GREEN 2
+#define MX_COLOR_ORANGE 3
+
+
 uint8_t mxR[32][8];
 uint8_t mxG[32][8];
 
 volatile uint8_t mx_frame_cnt;
+
+struct mx_point 
+{
+	uint8_t y;
+	uint8_t x;
+};
+
+struct mx_point mx_cursor;
 
 void mx_init(void);
 void mx_enable();
@@ -38,5 +56,7 @@ void mx_disable();
 //void mx_draw(uint8_t c);
 void mx_draw_byte(uint8_t r1,uint8_t g1,uint8_t r2,uint8_t g2);
 void mx_draw_row();
+void mx_char(uint8_t c, uint8_t color);
+void mx_string_p(const char* s, uint8_t color);
 
 #endif /* MATRIX_H_ */

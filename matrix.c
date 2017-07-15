@@ -5,6 +5,7 @@
  *  Author: DiGun
  */ 
 #include "matrix.h"
+#include "font5x7.h"
 
 //uint8_t mx_frame=0;
 void mx_init(void)
@@ -38,7 +39,56 @@ ISR(TIMER0_OVF_vect)
 		
 //	TCNT0=178;
 //	TCNT0=200;
+
 	sei();
+}
+
+void mx_string_p(const char* s, uint8_t color)
+{
+	while (pgm_read_byte(s)!='\0') // Пока первый байт строки не 0 (конец ASCIIZ строки)
+	{
+		mx_char(pgm_read_byte(s),color); // Мы шлем байты из строки
+		s++; // Не забывая увеличивать указатель,
+	} // Выбирая новую букву из строки.
+}
+
+
+void mx_char(uint8_t c, uint8_t color)
+{
+	uint8_t ch;
+	uint8_t f_byte;
+	uint8_t f_bit;
+	
+	uint8_t i;
+	uint8_t b;
+	
+	for (i=0;i<5;i++)
+	{
+		ch=pgm_read_byte(&Font5x7[c-32][i]);
+		f_byte=mx_cursor.x /8;
+		f_bit=0x80>>(mx_cursor.x %8);
+		for (b=0;b<7;b++)
+		{
+			if (ch&(1<<b))
+			{
+				if (color&MX_COLOR_RED)
+				{
+					mxR[mx_cursor.y+b][f_byte]|=f_bit;
+				}
+				if (color&MX_COLOR_GREEN)
+				{
+					mxG[mx_cursor.y+b][f_byte]|=f_bit;
+				}
+			} 
+			else
+			{
+				mxR[mx_cursor.y+b][f_byte]&=~(f_bit);
+				mxG[mx_cursor.y+b][f_byte]&=~(f_bit);
+			}
+		}
+		mx_cursor.x++;
+	}
+	mx_cursor.x++;
 }
 
 inline void mx_enable()

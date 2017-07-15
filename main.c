@@ -11,10 +11,15 @@
 
 
 #include "matrix.h"
-
+// #include "font5x7.h"
 
 unsigned char L;
 unsigned char G;
+
+void init_spi(void)
+{
+	
+}
 
 
 void init_screen1(void)
@@ -80,6 +85,8 @@ void init_screen2(void)
 	}
 }
 
+const char mim[] PROGMEM = "Mimolia";
+
 int main(void)
 {
 
@@ -94,14 +101,39 @@ int main(void)
 	// enable global interrupts
 //	mxG[28][7]=mx_frame;
 	sei();
+	/*
 	_delay_ms(500);
-	mxR[27][7]=1;
+	 mx_char('D');
+	 mx_cursor.y=4;
 	_delay_ms(1000);
-	mxR[27][7]=3;
+	 mx_char('K');
+	 mx_cursor.y=8;
 	_delay_ms(1000);
-//	mxR[31][7]=mx_frame;
-	mxR[27][7]=7;
+	 mx_char('8');
+	 mx_cursor.y=16;
 	_delay_ms(1000);
+ 	 mx_char('F');
+	 mx_cursor.y=5;
+	_delay_ms(1000);
+	 mx_char('Z');
+	_delay_ms(1000);
+	 mx_char('N');
+	_delay_ms(1000);
+	 mx_char('4');
+*/
+	mx_string_p(mim,MX_COLOR_GREEN);
+	mx_cursor.x=3;
+	mx_cursor.y=8;
+	_delay_ms(1000);
+	mx_string_p(mim,MX_COLOR_RED);
+	mx_cursor.x=6;
+	mx_cursor.y=16;
+	_delay_ms(1000);
+	mx_string_p(mim,MX_COLOR_ORANGE);
+	mx_cursor.x=6;
+	mx_cursor.y=16;
+	
+	_delay_ms(10000);
 	init_screen1();	
 	while (1)
 	{

@@ -127,6 +127,9 @@
     <Compile Include="74hc595.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="font5x7.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="matrix.c">
       <SubType>compile</SubType>
     </Compile>
