@@ -36,6 +36,12 @@
 #define MX_COLOR_GREEN 2
 #define MX_COLOR_ORANGE 3
 
+#define MX_UP 1
+#define MX_DOWN 2
+#define MX_LEFT 3
+#define MX_RIGHT 4
+
+
 
 uint8_t mxR[32][8];
 uint8_t mxG[32][8];
@@ -56,7 +62,10 @@ void mx_disable();
 //void mx_draw(uint8_t c);
 void mx_draw_byte(uint8_t r1,uint8_t g1,uint8_t r2,uint8_t g2);
 void mx_draw_row();
-void mx_char(uint8_t c, uint8_t color);
+void mx_char(char c, uint8_t color);
 void mx_string_p(const char* s, uint8_t color);
+void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t dir,uint8_t clr);
+void mx_digit(char d, uint8_t color);
+
 
 #endif /* MATRIX_H_ */
