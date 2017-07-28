@@ -75,16 +75,19 @@ void mx_char(char c, uint8_t color)
 				{
 					mxR[mx_cursor.y+b][f_byte]|=f_bit;
 				}
+				else
+				{
+					mxR[mx_cursor.y+b][f_byte]&=~(f_bit);					
+				}
 				if (color&MX_COLOR_GREEN)
 				{
 					mxG[mx_cursor.y+b][f_byte]|=f_bit;
 				}
+				else
+				{
+					mxG[mx_cursor.y+b][f_byte]&=~(f_bit);					
+				}
 			} 
-			else
-			{
-				mxR[mx_cursor.y+b][f_byte]&=~(f_bit);
-				mxG[mx_cursor.y+b][f_byte]&=~(f_bit);
-			}
 		}
 		mx_cursor.x++;
 	}
@@ -239,7 +242,7 @@ inline void mx_draw_byte(uint8_t r1,uint8_t g1,uint8_t r2,uint8_t g2)
 	  }
 }
 
-inline void mx_digit(char d, uint8_t color)
+void mx_digit(char d, uint8_t color)
 {
 	if (d>=10)
 	{
@@ -249,4 +252,10 @@ inline void mx_digit(char d, uint8_t color)
 	{
 		mx_char(d+'0',color);
 	}
+}
+
+void mx_hex(uint8_t d, uint8_t color)
+{
+	mx_digit((d>>4)&0x0F,color);
+	mx_digit((d)&0x0F,color);
 }

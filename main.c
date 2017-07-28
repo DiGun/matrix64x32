@@ -73,14 +73,14 @@ void init_screen2(void)
 		for (x=0;x<8;x++)
 		{
 			if((y/8)==x)
-				mxR[y][x]=1<<(y%8);
-			else	
-				mxR[y][x]=0;
-				
-			if(((31-y)/8)==x)
-				mxG[y][x]=1<<((31-y)%8);
+			mxR[y][x]=1<<(y%8);
 			else
-				mxG[y][x]=0;
+			mxR[y][x]=0;
+			
+			if(((31-y)/8)==x)
+			mxG[y][x]=1<<((31-y)%8);
+			else
+			mxG[y][x]=0;
 		}
 	}
 }
@@ -95,32 +95,32 @@ int main(void)
 
 	mx_init();
 	DDRD|=1;
-//	init_screen2();
+	//	init_screen2();
 	mx_disable();
 	
 	// enable global interrupts
-//	mxG[28][7]=mx_frame;
+	//	mxG[28][7]=mx_frame;
 	sei();
 	/*
 	_delay_ms(500);
-	 mx_char('D');
-	 mx_cursor.y=4;
+	mx_char('D');
+	mx_cursor.y=4;
 	_delay_ms(1000);
-	 mx_char('K');
-	 mx_cursor.y=8;
+	mx_char('K');
+	mx_cursor.y=8;
 	_delay_ms(1000);
-	 mx_char('8');
-	 mx_cursor.y=16;
+	mx_char('8');
+	mx_cursor.y=16;
 	_delay_ms(1000);
- 	 mx_char('F');
-	 mx_cursor.y=5;
+	mx_char('F');
+	mx_cursor.y=5;
 	_delay_ms(1000);
-	 mx_char('Z');
+	mx_char('Z');
 	_delay_ms(1000);
-	 mx_char('N');
+	mx_char('N');
 	_delay_ms(1000);
-	 mx_char('4');
-*/
+	mx_char('4');
+	*/
 	mx_string_p(mim,MX_COLOR_GREEN);
 	mx_cursor.x=3;
 	mx_cursor.y=8;
@@ -131,50 +131,53 @@ int main(void)
 	_delay_ms(1000);
 	mx_string_p(mim,MX_COLOR_ORANGE);
 	
-	for (G=0;G<16;G++)
+	for (G=0;G<255;G++)
 	{
-//		uint8_t fr=mx_frame_cnt;
-//		mx_scroll(6, 16,6, 15,MX_UP,0);
+		//		uint8_t fr=mx_frame_cnt;
+		//		mx_scroll(6, 16,6, 15,MX_UP,0);
 		mx_cursor.x=51;
 		mx_cursor.y=24;
-		mx_digit(0,MX_COLOR_GREEN);
-		mx_digit(G,MX_COLOR_RED);
-		_delay_ms(1000);
-		mxR[31][7]=G;
+		mx_hex(G,MX_COLOR_GREEN);
+		_delay_ms(100);
+		//		mxR[31][7]=G;
 
 	}
 	
 	_delay_ms(1000);
 	for (G=0;G<15;G++)
 	{
-		uint8_t fr=mx_frame_cnt;
-		mx_scroll(6, 16,6, 15,MX_UP,0);
+		//		uint8_t fr;;
+		mx_frame_cnt=0;
+		//		mx_scroll(6, 16,6, 15,MX_UP,0);
 		mx_cursor.x=51;
 		mx_cursor.y=24;
-		mx_digit(G,MX_COLOR_GREEN);
-		mx_digit(mx_frame_cnt-fr,MX_COLOR_RED);
-		_delay_ms(1000);
+		_delay_ms(999);
+		//		mxG[31][0]=mx_frame_cnt;
+		//		mxG[31][1]=(mxG[31][0])>>4;
+		//		mxG[31][2]=(mxG[31][0])&0x0F;
+		mx_hex(mx_frame_cnt,MX_COLOR_RED);
+		
 	}
 	_delay_ms(3000);
 	init_screen1();
 	_delay_ms(1000);
-	for (L=0;L<5;L++)
+	for (L=0;L<8;L++)
 	{
-	for (G=0;G<31-4;G++)
-	{
-		mx_scroll(2, 2,63-4-(L*3),31-4 ,MX_UP,0);
-		_delay_ms(500);
-	}
+		for (G=0;G<31-4;G++)
+		{
+			mx_scroll(32, 2,30-(L),31-4 ,MX_UP,0);
+			_delay_ms(500);
+		}
 	}
 	_delay_ms(10000);
-	init_screen1();	
+	init_screen1();
 	while (1)
 	{
 		_delay_ms(1);
-//		++mxR[31][7];
-//		mxG[30][7]=mx_frame_cnt;
-//		mxR[31][7]=mx_frame;
-//		PORTD^=1;
+		//		++mxR[31][7];
+		//		mxG[30][7]=mx_frame_cnt;
+		//		mxR[31][7]=mx_frame;
+		//		PORTD^=1;
 		if(mx_frame_cnt>=10)
 		{
 			init_screen1();

@@ -66,6 +66,7 @@ void mx_char(char c, uint8_t color);
 void mx_string_p(const char* s, uint8_t color);
 void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t dir,uint8_t clr);
 void mx_digit(char d, uint8_t color);
+void mx_hex(uint8_t d, uint8_t color);
 
 
 #endif /* MATRIX_H_ */
