@@ -121,15 +121,18 @@ int main(void)
 	_delay_ms(1000);
 	mx_char('4');
 	*/
-	mx_string_p(mim,MX_COLOR_GREEN);
+	mx_color=MX_COLOR_GREEN;
+	mx_string_p(mim);
 	mx_cursor.x=3;
 	mx_cursor.y=8;
 	_delay_ms(1000);
-	mx_string_p(mim,MX_COLOR_RED);
+	mx_color=MX_COLOR_RED;
+	mx_string_p(mim);
 	mx_cursor.x=6;
 	mx_cursor.y=16;
 	_delay_ms(1000);
-	mx_string_p(mim,MX_COLOR_ORANGE);
+	mx_color=MX_COLOR_ORANGE;
+	mx_string_p(mim);
 	
 	for (G=0;G<255;G++)
 	{
@@ -137,7 +140,8 @@ int main(void)
 		//		mx_scroll(6, 16,6, 15,MX_UP,0);
 		mx_cursor.x=51;
 		mx_cursor.y=24;
-		mx_hex(G,MX_COLOR_GREEN);
+		mx_color=MX_COLOR_GREEN;
+		mx_hex(G);
 		_delay_ms(50);
 		//		mxR[31][7]=G;
 
@@ -150,7 +154,7 @@ int main(void)
 	{
 		for (G=0;G<(15+1);G++)
 		{
-			mx_scroll(32, 0,62-(L),15 ,MX_UP,0);
+			mx_scroll(32, 0,63-(L),15 ,MX_UP);
 			_delay_ms(500);
 		}
 		mx_cursor.x=51;
