@@ -185,6 +185,52 @@ void mx_char(char c)
 	mx_cursor.x++;
 }
 
+uint8_t mx_byte_mask(uint8_t b, uint8_t f_byte, uint8_t f_mask,uint8_t r_byte, uint8_t r_mask)
+{
+	
+	if (f_byte>b)
+	{
+		return 0;
+	}
+	else
+	{
+		if (f_byte==b)
+		{
+			if(f_byte!=r_byte)
+			{
+				return f_mask;
+			}
+			else
+			{
+				return f_mask&r_mask;
+			}
+		}
+		else
+		{
+			if (f_byte<b)
+			{
+				if (r_byte>b)
+				{
+					return 0xFF;
+				}
+				else
+				{
+					if (r_byte==b)
+					{
+						return r_mask;
+					}
+					else
+					{
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+
 void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 {
 	int8_t r;
@@ -194,6 +240,7 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 	uint8_t f_mask;
 	uint8_t r_byte;
 	uint8_t r_mask;
+	uint8_t r_shift;
 	uint8_t saveR;
 	uint8_t saveG;
 
@@ -203,51 +250,13 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 	f_byte=x1/8;
 	f_mask=0xFF>>(x1%8);
 	r_byte=x2/8;
-	r_mask=0xFF<<(7-(x2%8));
+	r_shift=(7-(x2%8));
+	r_mask=0xFF<<r_shift;
 	if ((dir)==MX_UP||dir==MX_DOWN)
 	{
-		uint8_t mask=0;
 		for (b=0;b<8;b++)
 		{
-			if (f_byte>b)
-			{
-				mask=0;
-			}
-			else
-			{
-				if (f_byte==b)
-				{
-					if(f_byte!=r_byte)
-					{
-						mask=f_mask;
-					}
-					else
-					{
-						mask=f_mask&r_mask;
-					}
-				}
-				else
-				{
-					if (f_byte<b)
-					{
-						if (r_byte>b)
-						{
-							mask=0xFF;
-						}
-						else
-						{
-							if (r_byte==b)
-							{
-								mask=r_mask;
-							}
-							else
-							{
-								mask=0;
-							}
-						}
-					}
-				}
-			}
+			uint8_t mask=mx_byte_mask(b,  f_byte, f_mask,r_byte, r_mask);
 			if(mask==0)	continue;
 			if (dir==MX_UP)
 			{
@@ -274,6 +283,6 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 			mxR[r][b]=(mxR[r][b]&(~mask))|(saveR&(mask));
 			mxG[r][b]=(mxG[r][b]&(~mask))|(saveG&(mask));
 		}
-		
 	}
+
 }
