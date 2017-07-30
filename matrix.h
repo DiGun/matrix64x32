@@ -36,10 +36,14 @@
 #define MX_COLOR_GREEN 2
 #define MX_COLOR_ORANGE 3
 
-#define MX_UP 1
-#define MX_DOWN 2
-#define MX_LEFT 3
-#define MX_RIGHT 4
+#define MX_UP 0
+#define MX_DOWN 1
+#define MX_LEFT 2
+#define MX_RIGHT 3
+
+#define MX_CYCLE 4
+#define MX_CLR 8
+
 
 #define MX_X 64
 #define MX_Y 32

@@ -154,7 +154,7 @@ int main(void)
 	{
 		for (G=0;G<(15+1);G++)
 		{
-			mx_scroll(32, 0,63-(L),15 ,MX_UP);
+			mx_scroll(32, 0,63-(L),15 ,MX_DOWN);
 			_delay_ms(500);
 		}
 		mx_cursor.x=51;
