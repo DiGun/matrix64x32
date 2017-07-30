@@ -138,36 +138,24 @@ int main(void)
 		mx_cursor.x=51;
 		mx_cursor.y=24;
 		mx_hex(G,MX_COLOR_GREEN);
-		_delay_ms(100);
+		_delay_ms(50);
 		//		mxR[31][7]=G;
 
 	}
 	
-	_delay_ms(1000);
-	for (G=0;G<15;G++)
-	{
-		//		uint8_t fr;;
-		mx_frame_cnt=0;
-		//		mx_scroll(6, 16,6, 15,MX_UP,0);
-		mx_cursor.x=51;
-		mx_cursor.y=24;
-		_delay_ms(999);
-		//		mxG[31][0]=mx_frame_cnt;
-		//		mxG[31][1]=(mxG[31][0])>>4;
-		//		mxG[31][2]=(mxG[31][0])&0x0F;
-		mx_hex(mx_frame_cnt,MX_COLOR_RED);
-		
-	}
 	_delay_ms(3000);
 	init_screen1();
 	_delay_ms(1000);
-	for (L=0;L<8;L++)
+	for (L=0;L<12;L++)
 	{
-		for (G=0;G<31-4;G++)
+		for (G=0;G<(15+1);G++)
 		{
-			mx_scroll(32, 2,30-(L),31-4 ,MX_UP,0);
+			mx_scroll(32, 0,62-(L),15 ,MX_UP,0);
 			_delay_ms(500);
 		}
+		mx_cursor.x=51;
+		mx_cursor.y=24;
+//		mx_hex(30-(L),MX_COLOR_GREEN);
 	}
 	_delay_ms(10000);
 	init_screen1();

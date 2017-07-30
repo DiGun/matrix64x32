@@ -87,7 +87,12 @@ void mx_char(char c, uint8_t color)
 				{
 					mxG[mx_cursor.y+b][f_byte]&=~(f_bit);					
 				}
-			} 
+			}
+			else
+			{
+				mxR[mx_cursor.y+b][f_byte]&=~(f_bit);
+				mxG[mx_cursor.y+b][f_byte]&=~(f_bit);
+			}
 		}
 		mx_cursor.x++;
 	}
@@ -109,8 +114,8 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t dir,uint8_t
 	
 	f_byte=x1/8;
 	f_mask=0xFF>>(x1%8);
-	r_byte=(x1+x2)/8;
-	r_mask=0xFF<<((x1+x2)%8);
+	r_byte=x2/8;
+	r_mask=0xFF<<(7-(x2%8));
 	if (dir==MX_UP||dir==MX_DOWN)
 	{
 		uint8_t mask=0;
@@ -155,12 +160,10 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t dir,uint8_t
 					}
 				}
 			}
-//			mxR[31][b]=mask;
-//			mxG[31][b]=~mask;
 			if(mask==0)	continue;
 			saveR=mxR[y1][b];
 			saveG=mxG[y1][b];
-			for (r=y1+1;r<(y1+y2);r++)
+			for (r=y1+1;r<=(y2);r++)
 			{
 				mxR[r-1][b]=(mxR[r-1][b]&(~mask))|(mxR[r][b]&(mask));
 				mxG[r-1][b]=(mxG[r-1][b]&(~mask))|(mxG[r][b]&(mask));

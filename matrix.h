@@ -41,6 +41,8 @@
 #define MX_LEFT 3
 #define MX_RIGHT 4
 
+#define MX_X 64
+#define MX_Y 32
 
 
 uint8_t mxR[32][8];
