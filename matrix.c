@@ -234,10 +234,11 @@ uint8_t mx_byte_mask(uint8_t b, uint8_t f_byte, uint8_t f_mask,uint8_t r_byte, u
 void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 {
 	int8_t r;
-	uint8_t b;
+	int8_t b;
 
 	uint8_t f_byte;
 	uint8_t f_mask;
+	uint8_t f_shift;
 	uint8_t r_byte;
 	uint8_t r_mask;
 	uint8_t r_shift;
@@ -248,7 +249,8 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 	
 	
 	f_byte=x1/8;
-	f_mask=0xFF>>(x1%8);
+	f_shift=(x1%8);
+	f_mask=0xFF>>f_shift;
 	r_byte=x2/8;
 	r_shift=(7-(x2%8));
 	r_mask=0xFF<<r_shift;
@@ -283,6 +285,59 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 			mxR[r][b]=(mxR[r][b]&(~mask))|(saveR&(mask));
 			mxG[r][b]=(mxG[r][b]&(~mask))|(saveG&(mask));
 		}
+	}
+	else
+	{
+		uint8_t mask[8];
+		for (b=0;b<8;b++)
+		{
+			mask[b]=mx_byte_mask(b,  f_byte, f_mask,r_byte, r_mask);
+		}
+		if (dir==MX_RIGHT)
+		{
+			for (r=y1;r<=y2;r++)
+			{
+				saveG=(mxG[r][r_byte]&(1<<r_shift));
+				saveR=(mxR[r][r_byte]&(1<<r_shift));
+				    b = f_byte;
+				    do
+				    {
+						uint8_t overR = mxR[r][b] & 0x01;
+						uint8_t overG = mxG[r][b] & 0x01;
+				        uint8_t ShiftR = mxR[r][b]>>1;
+				        uint8_t ShiftG = mxG[r][b]>>1;
+//				        uint8_t ShiftR = mxR[r][b] & (~mask[b]);
+//				        uint8_t ShiftG = mxG[r][b] & (~mask[b]);
+				        mxR[r][b] >>= 1;
+						mxG[r][b] >>= 1;
+						if (b == f_byte)
+				        {
+					        if(saveR!=0)
+								ShiftR|=0x80>>f_shift;
+					        else
+								ShiftR &= ~(0x80>>f_shift);
+					        if(saveG!=0)
+								ShiftG |= 0x80>>f_shift;
+					        else
+								ShiftG &= ~(0x80>>f_shift);
+						}
+						else
+						{
+					       ShiftR |= (saveR) << 7;
+					       ShiftG |= (saveG) << 7;
+						}
+						mxR[r][b] = (ShiftR & mask[b]) | (mxR[r][b] & (~mask[b]));
+						mxG[r][b] = (ShiftG & mask[b]) | (mxG[r][b] & (~mask[b]));
+						b++;
+						if (b > r_byte)
+							break;
+						saveR = overR;
+						saveG = overG;
+				}
+				while(1);
+			}
+		}
+		
 	}
 
 }

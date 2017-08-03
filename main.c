@@ -140,9 +140,9 @@ int main(void)
 		//		mx_scroll(6, 16,6, 15,MX_UP,0);
 		mx_cursor.x=51;
 		mx_cursor.y=24;
-		mx_color=MX_COLOR_GREEN;
+		mx_color= G&16?MX_COLOR_GREEN:MX_COLOR_RED;
 		mx_hex(G);
-		_delay_ms(50);
+		_delay_ms(10);
 		//		mxR[31][7]=G;
 
 	}
@@ -154,8 +154,8 @@ int main(void)
 	{
 		for (G=0;G<(15+1);G++)
 		{
-			mx_scroll(32, 0,63-(L),15 ,MX_DOWN);
-			_delay_ms(500);
+			mx_scroll(29, 0,61,15 ,MX_RIGHT);
+			_delay_ms(200);
 		}
 		mx_cursor.x=51;
 		mx_cursor.y=24;
