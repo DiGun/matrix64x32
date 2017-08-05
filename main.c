@@ -152,10 +152,10 @@ int main(void)
 	_delay_ms(1000);
 	for (L=0;L<12;L++)
 	{
-		for (G=0;G<(15+1);G++)
+		for (G=0;G<((61-29)+1);G++)
 		{
 			mx_scroll(29, 0,61,15 ,MX_RIGHT);
-			_delay_ms(200);
+			_delay_ms(50);
 		}
 		mx_cursor.x=51;
 		mx_cursor.y=24;

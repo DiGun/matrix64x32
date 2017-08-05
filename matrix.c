@@ -299,43 +299,99 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 			{
 				saveG=(mxG[r][r_byte]&(1<<r_shift));
 				saveR=(mxR[r][r_byte]&(1<<r_shift));
-				    b = f_byte;
-				    do
-				    {
-						uint8_t overR = mxR[r][b] & 0x01;
-						uint8_t overG = mxG[r][b] & 0x01;
-				        uint8_t ShiftR = mxR[r][b]>>1;
-				        uint8_t ShiftG = mxG[r][b]>>1;
-//				        uint8_t ShiftR = mxR[r][b] & (~mask[b]);
-//				        uint8_t ShiftG = mxG[r][b] & (~mask[b]);
-				        mxR[r][b] >>= 1;
-						mxG[r][b] >>= 1;
-						if (b == f_byte)
-				        {
-					        if(saveR!=0)
-								ShiftR|=0x80>>f_shift;
-					        else
-								ShiftR &= ~(0x80>>f_shift);
-					        if(saveG!=0)
-								ShiftG |= 0x80>>f_shift;
-					        else
-								ShiftG &= ~(0x80>>f_shift);
-						}
+				b = f_byte;
+				do
+				{
+					uint8_t overR = mxR[r][b] & 0x01;
+					uint8_t overG = mxG[r][b] & 0x01;
+					uint8_t ShiftR = mxR[r][b]>>1;
+					uint8_t ShiftG = mxG[r][b]>>1;
+					if (b == f_byte)
+					{
+						if(saveR!=0)
+						ShiftR|=0x80>>f_shift;
 						else
-						{
-					       ShiftR |= (saveR) << 7;
-					       ShiftG |= (saveG) << 7;
-						}
-						mxR[r][b] = (ShiftR & mask[b]) | (mxR[r][b] & (~mask[b]));
-						mxG[r][b] = (ShiftG & mask[b]) | (mxG[r][b] & (~mask[b]));
-						b++;
-						if (b > r_byte)
-							break;
-						saveR = overR;
-						saveG = overG;
+						ShiftR &= ~(0x80>>f_shift);
+						if(saveG!=0)
+						ShiftG |= 0x80>>f_shift;
+						else
+						ShiftG &= ~(0x80>>f_shift);
+					}
+					else
+					{
+						ShiftR |= (saveR) << 7;
+						ShiftG |= (saveG) << 7;
+					}
+					/*
+					if(r==3)
+					{
+					mxR[31][b]=mask[b];
+					mxG[31][b]=0;
+					}
+					*/
+					mxR[r][b] = (ShiftR & mask[b]) | (mxR[r][b] & (~mask[b]));
+					mxG[r][b] = (ShiftG & mask[b]) | (mxG[r][b] & (~mask[b]));
+					b++;
+					if (b > r_byte)
+					break;
+					saveR = overR;
+					saveG = overG;
 				}
 				while(1);
 			}
+		}
+		else
+		{
+			// MX_LEFT
+			for (r=y1;r<=y2;r++)
+			{
+				saveG=(mxG[r][f_byte]&(1<<f_shift));
+				saveR=(mxR[r][f_byte]&(1<<f_shift));
+				b = f_byte;
+				do
+				{
+					uint8_t overR = mxR[r][b] & 0x01;
+					uint8_t overG = mxG[r][b] & 0x01;
+					uint8_t ShiftR = mxR[r][b]>>1;
+					uint8_t ShiftG = mxG[r][b]>>1;
+					//				        uint8_t ShiftR = mxR[r][b] & (~mask[b]);
+					//				        uint8_t ShiftG = mxG[r][b] & (~mask[b]);
+					//				        mxR[r][b] >>= 1;
+					//						mxG[r][b] >>= 1;
+					if (b == f_byte)
+					{
+						if(saveR!=0)
+						ShiftR|=0x80>>f_shift;
+						else
+						ShiftR &= ~(0x80>>f_shift);
+						if(saveG!=0)
+						ShiftG |= 0x80>>f_shift;
+						else
+						ShiftG &= ~(0x80>>f_shift);
+					}
+					else
+					{
+						ShiftR |= (saveR) << 7;
+						ShiftG |= (saveG) << 7;
+					}
+					/*
+					if(r==3)
+					{
+					mxR[31][b]=mask[b];
+					mxG[31][b]=0;
+					}
+					*/
+					mxR[r][b] = (ShiftR & mask[b]) | (mxR[r][b] & (~mask[b]));
+					mxG[r][b] = (ShiftG & mask[b]) | (mxG[r][b] & (~mask[b]));
+					b++;
+					if (b > r_byte)
+					break;
+					saveR = overR;
+					saveG = overG;
+				}
+				while(1);
+			}
+			
 		}
 		
 	}
