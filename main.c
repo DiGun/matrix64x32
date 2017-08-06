@@ -150,15 +150,15 @@ int main(void)
 	_delay_ms(3000);
 	init_screen1();
 	_delay_ms(1000);
-	for (L=0;L<12;L++)
+	for (L=0;L<10;L++)
 	{
-		for (G=0;G<((61-29)+1);G++)
+		for (G=0;G<5;G++)
 		{
-			mx_scroll(29, 0,61,15 ,MX_LEFT|MX_CLEAR);
+			mx_scroll_char('0'+L,G, 29, 0,61,30 ,MX_DOWN);
 			_delay_ms(50);
 		}
-		mx_cursor.x=51;
-		mx_cursor.y=24;
+//		mx_cursor.x=51;
+//		mx_cursor.y=24;
 //		mx_hex(30-(L),MX_COLOR_GREEN);
 	}
 	_delay_ms(10000);
