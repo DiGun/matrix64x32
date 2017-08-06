@@ -40,6 +40,8 @@
 #define MX_DOWN 1
 #define MX_LEFT 2
 #define MX_RIGHT 3
+#define MX_CLEAR 4
+
 
 #define MX_CYCLE 4
 #define MX_CLR 8
