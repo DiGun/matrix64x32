@@ -427,7 +427,7 @@ void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 
 void mx_scroll_char(char c,uint8_t step,uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir)
 {
-	mx_scroll(x1,y1,x2,y2,pdir|MX_CLEAR);
+	pdir&=3;
 	if ((pdir==MX_DOWN)||(pdir==MX_UP))
 	{
 		uint8_t ch;
@@ -435,6 +435,8 @@ void mx_scroll_char(char c,uint8_t step,uint8_t x1, uint8_t y1,uint8_t x2, uint8
 		uint8_t f_bit;
 		
 		uint8_t i;
+		mx_scroll(x1,y1,x1+4,y2,pdir|MX_CLEAR);
+
 		if(pdir==MX_DOWN) step=6-step;
 		for (i=0;i<5;i++)
 		{
@@ -469,7 +471,49 @@ void mx_scroll_char(char c,uint8_t step,uint8_t x1, uint8_t y1,uint8_t x2, uint8
 	}
 	else
 	{
-		;
+		uint8_t ch;
+		uint8_t x_byte;
+		uint8_t x_bit;
+		
+		uint8_t b;
+		mx_scroll(x1,y1,x2,y1+6,pdir|MX_CLEAR);
+		ch=pgm_read_byte(&Font5x7[c-32][pdir!=MX_LEFT?4-step:step]);
+		x_byte=(pdir!=MX_LEFT?x1/8:x2/8);
+		x_bit=(pdir!=MX_LEFT?0x80>>(x1%8):0x01<<(7-(x2%8)));
+		
+		mxR[31][0]=x_byte;
+		mxR[31][1]=x_bit;
+		mxR[31][2]=ch;
+		mxG[31][0]=0;
+		mxG[31][1]=0;
+		mxG[31][2]=0;
+		for (b=y1;b<(y1+7);b++)
+		{
+			if (ch&(1<<(b-y1)))
+			{
+				if (mx_color&MX_COLOR_RED)
+				{
+					mxR[b][x_byte]|=x_bit;
+				}
+				else
+				{
+					mxR[b][x_byte]&=~(x_bit);
+				}
+				if (mx_color&MX_COLOR_GREEN)
+				{
+					mxG[b][x_byte]|=x_bit;
+				}
+				else
+				{
+					mxG[b][x_byte]&=~(x_bit);
+				}
+			}
+			//			else
+			//			{
+			//				mxR[b][x_byte]&=~(x_bit);
+			//				mxG[b][x_byte]&=~(x_bit);
+			//			}
+		}
 	}
 }
 

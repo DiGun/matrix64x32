@@ -153,21 +153,45 @@ int main(void)
 	mx_clear(25,0,44,32,MX_COLOR_OFF);
 	for (L=0;L<10;L++)
 	{
+		mx_scroll(29, 0,35, 31, MX_DOWN|MX_CLEAR);
+		mx_scroll(36, 0,42,31 ,MX_UP|MX_CLEAR);
 		for (G=0;G<7;G++)
 		{
 			mx_color= MX_COLOR_GREEN;
 			mx_scroll_char('0'+L,G, 29, 0,35,31 ,MX_DOWN);
 			mx_color=MX_COLOR_RED;
 			mx_scroll_char('0'+L,G, 36, 0,42,31 ,MX_UP);
-			_delay_ms(100);
+			_delay_ms(50);
 		}
 		_delay_ms(1500);
-		mx_scroll(29, 0,35, 31, MX_DOWN|MX_CLEAR);
-		mx_scroll(36, 0,42,31 ,MX_UP|MX_CLEAR);
 //		mx_cursor.x=51;
 //		mx_cursor.y=24;
 //		mx_hex(30-(L),MX_COLOR_GREEN);
 	}
+	
+	
+	_delay_ms(1000);
+	mx_clear(0,7,63,25,MX_COLOR_OFF);
+	for (L=0;L<10;L++)
+	{
+		mx_scroll(2, 8, 61, 14, MX_LEFT|MX_CLEAR);
+		mx_scroll(2, 16, 61, 25, MX_RIGHT|MX_CLEAR);
+		for (G=0;G<5;G++)
+		{
+//			mx_color= MX_COLOR_GREEN;
+//			mx_scroll_char('0'+L,G, 29, 0,35,31 ,MX_DOWN);
+			mx_color=MX_COLOR_RED;
+			mx_scroll_char('0'+L,G, 2, 8, 61, 14, MX_LEFT);
+			mx_color=MX_COLOR_GREEN;
+			mx_scroll_char('0'+L,G, 2, 16, 61, 25, MX_RIGHT);
+			_delay_ms(60);
+		}
+		_delay_ms(1000);
+		//		mx_cursor.x=51;
+		//		mx_cursor.y=24;
+		//		mx_hex(30-(L),MX_COLOR_GREEN);
+	}	
+	
 	_delay_ms(10000);
 	init_screen1();
 	while (1)
