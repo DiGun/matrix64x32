@@ -75,6 +75,9 @@ void mx_draw_row();
 void mx_char(char c);
 void mx_string_p(const char* s);
 void mx_scroll(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t dir);
+void mx_scroll_char(char c,uint8_t step,uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t pdir);
+void mx_clear(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t color);
+
 void mx_digit(char d);
 void mx_hex(uint8_t d);
 
