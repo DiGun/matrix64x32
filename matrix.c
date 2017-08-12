@@ -481,12 +481,6 @@ void mx_scroll_char(char c,uint8_t step,uint8_t x1, uint8_t y1,uint8_t x2, uint8
 		x_byte=(pdir!=MX_LEFT?x1/8:x2/8);
 		x_bit=(pdir!=MX_LEFT?0x80>>(x1%8):0x01<<(7-(x2%8)));
 		
-		mxR[31][0]=x_byte;
-		mxR[31][1]=x_bit;
-		mxR[31][2]=ch;
-		mxG[31][0]=0;
-		mxG[31][1]=0;
-		mxG[31][2]=0;
 		for (b=y1;b<(y1+7);b++)
 		{
 			if (ch&(1<<(b-y1)))
@@ -558,4 +552,54 @@ void mx_clear(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t color)
 		b++;
 	}
 	while(b <= r_byte);
+}
+
+void mx_plot(uint8_t x, uint8_t y)
+{
+	uint8_t f_byte=x/8;
+	uint8_t f_bit=0x80>>((x) %8);
+	if (mx_color&MX_COLOR_RED)
+	{
+		mxR[y][f_byte]|=f_bit;
+	}
+	else
+	{
+		mxR[y][f_byte]&=~(f_bit);
+	}
+	if (mx_color&MX_COLOR_GREEN)
+	{
+		mxG[y][f_byte]|=f_bit;
+	}
+	else
+	{
+		mxG[y][f_byte]&=~(f_bit);
+	}
+}
+
+int8_t mx_abs(int8_t val)
+{
+	if(val<0)
+		return -val;
+	return val;
+}
+
+void mx_draw(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2)
+{
+	int8_t sx=x2<x1?-1:1;
+	int8_t sy=y2<y1?-1:1;
+    int8_t ax=mx_abs(x2-x1);
+	ax++;
+    int8_t ay=mx_abs(y2-y1);
+	ay++;
+    int8_t st=(ax<ay)?ay:ax;
+    for (int8_t f = 0; f < st; f++)
+    {
+	    mx_plot(x1+ (sx*((uint16_t)(ax*f)/st)),y1+(sy*((uint16_t)(ay*f)/st)));
+	}
+}
+
+void mx_clear_all()
+{
+	memset(mxR,0,256);
+	memset(mxG,0,256);
 }

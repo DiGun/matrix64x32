@@ -11,8 +11,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include <string.h>
 #include <avr/pgmspace.h>
-//
 
 
 #define LA PD2
@@ -80,6 +80,10 @@ void mx_clear(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2,uint8_t color);
 
 void mx_digit(char d);
 void mx_hex(uint8_t d);
+
+void mx_clear_all();
+void mx_plot(uint8_t x, uint8_t y);
+void mx_draw(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2);
 
 
 #endif /* MATRIX_H_ */

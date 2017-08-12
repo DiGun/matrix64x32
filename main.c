@@ -144,10 +144,19 @@ int main(void)
 		mx_hex(G);
 		_delay_ms(20);
 		//		mxR[31][7]=G;
-
 	}
 	
 	_delay_ms(1000);
+	mx_clear_all();
+	mx_color=MX_COLOR_RED;
+	mx_plot(63,31);
+	mx_color= MX_COLOR_GREEN;
+	mx_draw(0,0,15,15);
+	mx_color=MX_COLOR_RED;
+	mx_draw(15,16,0,31);
+	mx_color= MX_COLOR_GREEN;
+	mx_draw(61,2,53,30);
+	_delay_ms(10000);
 	init_screen1();
 	_delay_ms(1000);
 	mx_clear(25,0,44,32,MX_COLOR_OFF);
