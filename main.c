@@ -148,15 +148,19 @@ int main(void)
 	
 	_delay_ms(1000);
 	mx_clear_all();
-	mx_color=MX_COLOR_RED;
-	mx_plot(63,31);
-	mx_color= MX_COLOR_GREEN;
-	mx_draw(0,0,15,15);
-	mx_color=MX_COLOR_RED;
-	mx_draw(15,16,0,31);
-	mx_color= MX_COLOR_GREEN;
-	mx_draw(61,2,53,30);
-	_delay_ms(10000);
+	for (G=0;G<32;G++)
+	{
+		mx_color=MX_COLOR_RED;
+		mx_draw(G,0,15,15);
+		mx_color= MX_COLOR_GREEN;
+		mx_draw(0,G/2,15,15);
+		_delay_ms(500);
+		mx_color=MX_COLOR_OFF;
+		mx_draw(G,0,15,15);
+		mx_draw(0,G/2,15,15);
+	}
+	
+//	_delay_ms(10000);
 	init_screen1();
 	_delay_ms(1000);
 	mx_clear(25,0,44,32,MX_COLOR_OFF);

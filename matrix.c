@@ -36,7 +36,6 @@ ISR(TIMER0_OVF_vect)
 		mx_draw_row();
 		count=0;
 	}
-	
 	//	TCNT0=178;
 	//	TCNT0=200;
 
