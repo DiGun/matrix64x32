@@ -584,17 +584,30 @@ int8_t mx_abs(int8_t val)
 
 void mx_draw(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2)
 {
-	int8_t sx=x2<x1?-1:1;
-	int8_t sy=y2<y1?-1:1;
-    int8_t ax=mx_abs(x2-x1);
-	ax++;
-    int8_t ay=mx_abs(y2-y1);
-	ay++;
-    int8_t st=(ax<ay)?ay:ax;
-    for (int8_t f = 0; f < st; f++)
+    int8_t deltaX = mx_abs(x2 - x1);
+    int8_t deltaY = mx_abs(y2 - y1);
+    int8_t signX = x1 < x2 ? 1 : -1;
+    int8_t signY = y1 < y2 ? 1 : -1;
+    //
+    int8_t error = deltaX - deltaY;
+    //
+    mx_plot(x2, y2);
+    while(x1 != x2 || y1 != y2)
     {
-	    mx_plot(x1+ (sx*((uint16_t)(ax*f)/st)),y1+(sy*((uint16_t)(ay*f)/st)));
-	}
+	    mx_plot(x1, y1);
+	    int8_t error2 = error * 2;
+	    //
+	    if(error2 > -deltaY)
+	    {
+		    error -= deltaY;
+		    x1 += signX;
+	    }
+	    if(error2 < deltaX)
+	    {
+		    error += deltaX;
+		    y1 += signY;
+	    }
+    }
 }
 
 void mx_clear_all()
